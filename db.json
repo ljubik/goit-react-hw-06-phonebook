@@ -1,4 +1,3 @@
 {
-    "contacts": [],
-    "revers": ["sudo npm install -g json-server",  "start: json-server --watch db.json --port 4000"]
+    "contacts": []
 }
