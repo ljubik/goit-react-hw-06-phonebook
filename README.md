@@ -14,3 +14,9 @@
   `request`, `success` і `error`.
 - Додай селектори в файл `contactsSelectors` изроби мемоізацію селекторів там,
   де необхідно.
+  
+  
+  db.json
+  {
+  "contacts": []
+  }
