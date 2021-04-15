@@ -6,12 +6,12 @@ import ContactForm from "./components/ContactForm/ContactForm";
 import ContactList from "./components/ContactList/ContactList";
 import Filter from "./components/Filter/Filter";
 
-// import routes from "./routes";
 import { connect } from "react-redux";
 import addUserAction from "./redux/actions/userAction";
 import filterAction from "./redux/actions/filterAction";
 import actions from './redux/modal/actions';
-
+import operations from './redux/orders/operations';
+import { getOrders, filteredOrders } from './redux/orders/selectors';
 
 
 class App extends Component {
@@ -66,6 +66,7 @@ class App extends Component {
       this.setState(() => ({ contacts: [...contactLocalStorege] }));
       return;
     }
+    this.props.getMyOrders()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,28 +75,24 @@ class App extends Component {
       localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
     }
   }
-  
-  componentWillUnmount(){
-
-  }
-
-  toggleModal = () => {
-    const { myModal, myChangeModal } = this.props
-    console.log(myModal)
-    return myChangeModal(!myModal)
-  }
 
   render() {
-    const { addContact, getValue, getList, toDelete, toggleModal } = this;
-    const { state, myModal } = this.props
+    const { getValue, getList} = this;
+    console.log(this.props.myOrders)
+    const {
+          myOrders,
+          addMyOrder,
+          getMyOrders,
+          deleteMyOrder,
+          getMyFilter,
+    } = this.props
     return (
       <div className="App">
-        <Main title="Телефонна книжка v.1.3"/>
+        <Main title="Телефонна книжка v.1.4"/>
         <ContactForm  getValue={getValue} />
         <h2 className="pApp">Пошук контактів </h2>
         <Filter filterContact={getValue} />
         <ContactList contacts={getList()} />
-        {/* <button onClick={toggleModal}>{`click ${myModal}`}</button> */}
       </div>
     );
   }
@@ -115,6 +112,9 @@ const mapDispatchToProps = {
   delnum: addUserAction.deleteNumber,
   filter: filterAction.filter,
   myChangeModal: actions.changeShowModal,
+  getMyOrders: operations.getOrders,
+  addMyOrder: operations.addOrder,
+  deleteMyOrder: operations.deleteOrder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
