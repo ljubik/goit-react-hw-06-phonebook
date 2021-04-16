@@ -40,11 +40,4 @@ const filterName = (nameObject) => {
   };
 };
 
-// const filterName = (nameObject) => {
-//   return {
-//     type: "SET_FILTER",
-//     payload: nameObject,
-//   };
-// };
-
 export default { addUser, deleteUser, addNumber, deleteNumber, createNumber, filterName};

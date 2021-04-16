@@ -1,6 +1,6 @@
 import "./App.css";
-import React, { Component } from "react";
-
+import React, { Component, Suspense } from "react";
+import axios from 'axios'
 import Main from "./components/Main/Main";
 import ContactForm from "./components/ContactForm/ContactForm";
 import ContactList from "./components/ContactList/ContactList";
@@ -61,12 +61,25 @@ class App extends Component {
   };
 
   componentDidMount() {
+    console.log("---------------",this.props.getMyOrders)
     const contactLocalStorege = JSON.parse(localStorage.getItem("contacts"));
     if (contactLocalStorege) {
       this.setState(() => ({ contacts: [...contactLocalStorege] }));
       return;
     }
     this.props.getMyOrders()
+    
+// axios.defaults.baseURL = `http://localhost:4000`
+// axios
+//     .get('/contacts')
+//     .then(({ data }) => {
+//       console.log('+++++++++s', data)
+//        })
+//     .catch((error) => {
+//       console.log('+++++---------++++s', error)
+//     })
+
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -78,32 +91,53 @@ class App extends Component {
 
   render() {
     const { getValue, getList} = this;
-    console.log(this.props.myOrders)
     const {
-          myOrders,
-          addMyOrder,
-          getMyOrders,
-          deleteMyOrder,
-          getMyFilter,
-    } = this.props
+      myOrders,
+      addMyOrder,
+      getMyOrders,
+      deleteMyOrder,
+      getMyFilter,
+      filteredOrders,
+} = this.props
+    // console.log("this.props.getMyOrders", this.props.getMyOrders())
+    // console.log("this.props", this.props);
+    // console.log("this.props.contacts", this.props.contacts);
+
     return (
       <div className="App">
         <Main title="Телефонна книжка v.1.4"/>
-        <ContactForm  getValue={getValue} />
+        <ContactForm  
+          getValue={getValue} 
+          myOrders={myOrders}
+          addMyOrder={addMyOrder}
+          getMyOrders={getMyOrders}
+          
+          
+        />
         <h2 className="pApp">Пошук контактів </h2>
-        <Filter filterContact={getValue} />
-        <ContactList contacts={getList()} />
+        <Filter 
+          filterContact={getValue} 
+          getMyOrders={getMyOrders}
+          getMyFilter={getMyFilter}
+          filteredOrders={filteredOrders}
+        />
+        <ContactList 
+          contacts={getList()}
+          getMyOrders={getMyOrders} 
+          deleteMyOrder={deleteMyOrder}
+        />
       </div>
     );
   }
 }
 
 const mapStateToProps = (store) => {
-  // console.log("store", store);
+  console.log("store", store);
 
   return {
-    contacts: store.contacts,
+    // contacts: store.contacts,
     filter : store.filteredContacts,
+    contacts: getOrders(store)
   };
 };
 

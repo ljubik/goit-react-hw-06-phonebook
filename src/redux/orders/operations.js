@@ -11,13 +11,14 @@ import {
 } from './actions'
 
 import axios from 'axios'
-axios.defaults.baseURL = `http://localhost:4040`
+axios.defaults.baseURL = `http://localhost:4000`
 
 const getOrders = () => (dispatch) => {
   dispatch(getOrdersRequest())
-  axios
-    .get('/orders')
+  return axios
+    .get('/contacts')
     .then(({ data }) => {
+      console.log('getOrdersSuccess', data)
       return dispatch(getOrdersSuccess(data))
     })
     .catch((error) => {
@@ -25,11 +26,12 @@ const getOrders = () => (dispatch) => {
     })
 }
 
-const addOrder = (order) => (dispatch) => {
+const addOrder = (contacts) => (dispatch) => {
   dispatch(addOrderRequest())
   axios
-    .post('/orders', order)
+    .post('/contacts', contacts)
     .then(({ data }) => {
+      console.log('addOrderSuccess', data)
       return dispatch(addOrderSuccess(data))
     })
     .catch((error) => {
@@ -45,9 +47,9 @@ const addOrder = (order) => (dispatch) => {
 const deleteOrder = (id) => (dispatch) => {
   dispatch(deleteOrderRequest())
   axios
-    .delete(`/orders/${id}`)
+    .delete(`/contacts/${id}`)
     .then(({ data }) => {
-      console.log('DELETE', data)
+      console.log('DELETE from deleteOrder', data)
       return dispatch(deleteOrderSuccess(id))
     })
     .catch((error) => {

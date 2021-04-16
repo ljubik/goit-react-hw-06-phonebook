@@ -6,12 +6,16 @@ import style from "./ContactForm.module.css";
 
 import { connect } from "react-redux";
 import userAction from "../../redux/actions/userAction";
-
+import operations from '../../redux/orders/operations';
+import { getOrders } from '../../redux/orders/selectors';
+// console.log(getOrders)
+// console.log(operations)
 
 class ContactForm extends Component {
   state = {
     name: "",
     tel: "",
+    id: '',
   };
 
   handleChange = (e) => {
@@ -30,7 +34,12 @@ class ContactForm extends Component {
     const el = { id: id(), name, tel };
 
     if (!contacts.some((c) => c.name === el.name)){
-    this.props.addNumber(el);}
+ 
+      // this.props.addNumber(el);
+    
+    this.props.addMyOrder(el)
+    
+  }
     else {alert(`Увага дане імя уже використовується!` )}
 
     this.formReset();
@@ -44,12 +53,13 @@ class ContactForm extends Component {
   }
 
   render() {
-    const { handleSubmit } = this;
+    const { handleChange, handleSubmit, handleDelete, filterSubmit } = this;
     const { name, tel} = this.state;
+    const { myOrders, addNumber} = this.props
     return (
       <form onSubmit={handleSubmit} className={style.form}>
         <input
-          onChange={this.handleChange}
+          onChange={handleChange}
           type="text"
           name="name"
           id="name"
@@ -58,7 +68,7 @@ class ContactForm extends Component {
           required
         />
         <input
-          onChange={this.handleChange}
+          onChange={handleChange}
           type="number"
           name="tel"
           id="tel"
@@ -83,13 +93,15 @@ const mapStateToProps = (store) => {
   // console.log("store in contact form", store);
 
   return {
-    contacts: store.contacts,
+    // contacts: store.contacts,
+    contacts: getOrders(store),
   };
 };
 
 const mapDispatchToProps = {
   addNumber: userAction.addNumber,
-  // create: userAction.createNumber,
+  // addNumber: operations.addOrder,
+  addMyOrder: operations.addOrder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
