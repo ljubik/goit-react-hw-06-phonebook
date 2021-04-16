@@ -4,10 +4,19 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import userAction from "../../redux/actions/userAction";
+import operations from '../../redux/orders/operations';
+import { getOrders } from '../../redux/orders/selectors';
 
-const ContactList = ({ contacts, delnum, filter, filteredContacts }) => {
+const ContactList = ({ contacts, delnum, filter, filteredContacts, deleteMyOrder, getMyOrders}) => {
   // console.log("contacts", contacts);
+  // console.log("deleteMyOrder", deleteMyOrder);
   // console.log("filter", filter);
+
+  // const handleDelete = (id) => {
+  //   this.props.deleteMyOrder(id)
+  //   // this.props.getMyOrders()
+  // }
+
   return (
     <>
     
@@ -21,7 +30,9 @@ const ContactList = ({ contacts, delnum, filter, filteredContacts }) => {
           }).map((el) => (
             <li className={style.listLi} key={el.id} >
             <span>{el.name}:</span><span>{el.tel}</span>
-            <span><button className={style.listBtn} onClick={() => delnum(el.id)}>Видалити</button></span>
+            {/* <span><button className={style.listBtn} onClick={() => delnum(el.id)}>Видалити</button></span> */}
+            <span><button className={style.listBtn} onClick={() => deleteMyOrder(el.id)}>Видалити</button></span>
+            
             </li>
           ))}
         </ul>
@@ -56,6 +67,7 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = {
   delnum: userAction.deleteNumber,
+  deleteMyOrder: operations.deleteOrder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
