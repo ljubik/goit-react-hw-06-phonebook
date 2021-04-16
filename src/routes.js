@@ -29,5 +29,14 @@ const routes = [
     private: true,
     restricted: true,
   },
+  {
+    key: uuid(),
+    exact: true,
+    path: '/test',
+    // path: `${match.url}`,
+    component: lazy(() => import('./components/Main/Main')),
+    private: true,
+    restricted: true,
+  },
 ]
 export default routes
