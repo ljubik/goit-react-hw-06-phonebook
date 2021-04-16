@@ -7,7 +7,7 @@ const routes = [
     exact: true,
     path: '/',
     // path: `${match.url}`,
-    component: lazy(() => import('./App')),
+    component: lazy(() => import('./redux/Container/Container')),
     private: true,
     restricted: true,
   },
